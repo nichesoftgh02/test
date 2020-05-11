@@ -49,21 +49,16 @@ jobs:
       shell: bash
       run: |
         echo "##[set-output name=branch;]$(echo ${DD#refs/heads/})"
-        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "::set-output name=sha_short::$(git rev-parse HEAD)"
 
     - name: Another step
       run: |
         echo "Branch: ${{ steps.vars.outputs.branch }}"
         echo "Sha: ${{ steps.vars.outputs.sha_short }}"
         
-    - name: Notify slack success
-      if: success()
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: voxmedia/github-action-slack-notify-build@v1
+    - uses: 8398a7/action-slack@v2
       with:
-        # Updates existing message from the first step
-        message_id: ${{ steps.slack.outputs.message_id }}
-        channel: tt
-        status: SUCCESS
-        color: good
+        status: ${{ job.status }}
+        author_name: Integration Test # default: 8398a7@action-slack
+      env:
+        SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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" # required
