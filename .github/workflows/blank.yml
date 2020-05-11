@@ -17,6 +17,35 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: custom
+        payload: |
+          {
+            text: "Deployment",
+            attachments: [{
+              "author_name": "deploy-to-qa1", // json
+              fallback: 'fallback',
+              color: 'warning',
+              title: 'CI Status',
+              text: 'STARTING',
+              fields: [{
+                title: 'Branch',
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}`,
+                short: false
+              }],
+              footer_icon: 'https://github.githubassets.com/favicon.ico',
+              footer: `<https://github.com/nichesoftgh02/test | 'nichesoftgh02/test'>`,
+              ts: Math.floor(Date.now() / 1000),
+              actions: [{
+              }]
+            }]
+          }
+      env:
+        DD: ${{ github.event.client_payload.branch }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      if: success()
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       with:
@@ -45,7 +74,6 @@ jobs:
       run: |
         echo "Branch: ${{ steps.vars.outputs.branch }}"
         echo "Sha: ${{ steps.vars.outputs.sha_short }}"   
-  
     - uses: 8398a7/action-slack@v2
       with:
         status: custom
@@ -55,22 +83,12 @@ jobs:
             attachments: [{
               "author_name": "deploy-to-qa1", // json
               fallback: 'fallback',
-              color: 'good',
+              color: 'warning',
               title: 'CI Status',
-              text: 'Started',
+              text: 'SUCCESS',
               fields: [{
                 title: 'Branch',
                 value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}`,
-                short: true
-              },
-              {
-                title: 'Sha',
-                value: `${{ steps.vars.outputs.sha_short }}`,
-                short: true
-              },
-              {
-                title: 'Action',
-                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }}/checks | 'deploy-to-qa1'>`,
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
@@ -84,4 +102,34 @@ jobs:
         DD: ${{ github.event.client_payload.branch }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-      if: always()
+      if: success()
+      
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: custom
+        payload: |
+          {
+            text: "Deployment",
+            attachments: [{
+              "author_name": "deploy-to-qa1", // json
+              fallback: 'fallback',
+              color: 'danger',
+              title: 'CI Status',
+              text: 'FAILED',
+              fields: [{
+                title: 'Branch',
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}`,
+                short: false
+              }],
+              footer_icon: 'https://github.githubassets.com/favicon.ico',
+              footer: `<https://github.com/nichesoftgh02/test | 'nichesoftgh02/test'>`,
+              ts: Math.floor(Date.now() / 1000),
+              actions: [{
+              }]
+            }]
+          }
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      if: failure()
+      
