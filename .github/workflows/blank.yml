@@ -61,6 +61,6 @@ jobs:
         status: ${{ job.status }}
         author_name: Integration Test
       env:
-        GITHUB_TOKEN: "59825bfa2959205598a7a78353561cb8b03cb328"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       if: always()
