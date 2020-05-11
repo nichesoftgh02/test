@@ -54,3 +54,39 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       if: always()
+  
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: custom
+        payload: |
+          {
+            text: "Custom Field Check",
+            attachments: [{
+              "author_name": "8398a7@action-slack", // json
+              fallback: 'fallback',
+              color: 'good',
+              title: 'CI Result',
+              text: ${ DD },
+              fields: [{
+                title: 'lower case',
+                value: 'LOWER CASE CHECK'.toLowerCase(),
+                short: true
+              },
+              {
+                title: 'reverse',
+                value: 'gnirts esrever'.split('').reverse().join(''),
+                short: true
+              },
+              {
+                title: 'long title1',
+                value: 'long value1',
+                short: false
+              }],
+              actions: [{
+              }]
+            }]
+          }
+      env:
+        DD: ${{ github.event.client_payload.branch }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
