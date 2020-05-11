@@ -59,6 +59,7 @@ jobs:
     - uses: 8398a7/action-slack@v2
       with:
         status: ${{ job.status }}
-        author_name: Integration Test # default: 8398a7@action-slack
+        author_name: Integration Test
       env:
-        SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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" # required
+        SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
+      if: always()
