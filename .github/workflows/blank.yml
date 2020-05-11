@@ -40,16 +40,11 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
         
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${github.event.client_payload.branch#refs/heads/})"
-      id: extract_branch
-    
     - name: Declare some variables
       id: vars
       shell: bash
       run: |
-        echo "##[set-output name=branch;]$(echo ${github.event.client_payload.branch#refs/heads/})"
+        echo "##[set-output name=branch;]$(echo ${{github.event.client_payload.branch#refs/heads/}})"
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
     - name: Another step
