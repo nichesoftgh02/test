@@ -17,6 +17,20 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+      with:
+          ref: ${{ github.event.client_payload.branch }}
+
+    - name: Declare some variables
+      id: vars
+      env:
+        DD: ${{ github.event.client_payload.branch }}
+      shell: bash
+      run: |
+        echo "##[set-output name=branch;]$(echo ${DD#refs/heads/})"
+        echo "::set-output name=sha_short::$(git rev-parse HEAD)" 
+        
     - uses: 8398a7/action-slack@v2
       with:
         status: custom
@@ -46,34 +60,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
       if: success()
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-      with:
-          ref: ${{ github.event.client_payload.branch }}
-
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo Hello, world!
-
-    # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-        
-    - name: Declare some variables
-      id: vars
-      env:
-        DD: ${{ github.event.client_payload.branch }}
-      shell: bash
-      run: |
-        echo "##[set-output name=branch;]$(echo ${DD#refs/heads/})"
-        echo "::set-output name=sha_short::$(git rev-parse HEAD)"
-
-    - name: Another step
-      run: |
-        echo "Branch: ${{ steps.vars.outputs.branch }}"
-        echo "Sha: ${{ steps.vars.outputs.sha_short }}"   
+    
     - uses: 8398a7/action-slack@v2
       with:
         status: custom
@@ -88,7 +75,7 @@ jobs:
               text: 'SUCCESS',
               fields: [{
                 title: 'Branch',
-                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}`,
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}>`,
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
@@ -122,7 +109,7 @@ jobs:
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
-              footer: `<https://github.com/nichesoftgh02/test | 'nichesoftgh02/test'>`,
+              footer: `<https://github.com/nichesoftgh02/test | nichesoftgh02/test>`,
               ts: Math.floor(Date.now() / 1000),
               actions: [{
               }]
