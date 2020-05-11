@@ -62,19 +62,19 @@ jobs:
           {
             text: "Custom Field Check",
             attachments: [{
-              "author_name": "8398a7@action-slack", // json
+              "author_name": "deploy-to-qa1", // json
               fallback: 'fallback',
               color: 'good',
               title: 'CI Result',
               text: `${{ github.event.client_payload.branch }}`,
               fields: [{
-                title: 'lower case',
-                value: 'LOWER CASE CHECK'.toLowerCase(),
+                title: 'Branch',
+                value: `${{ github.event.client_payload.branch }}`,
                 short: true
               },
               {
-                title: 'reverse',
-                value: 'gnirts esrever'.split('').reverse().join(''),
+                title: 'Sha',
+                value: `${{ steps.vars.outputs.sha_short }}`,
                 short: true
               },
               {
