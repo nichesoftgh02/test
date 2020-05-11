@@ -44,32 +44,23 @@ jobs:
     - name: Another step
       run: |
         echo "Branch: ${{ steps.vars.outputs.branch }}"
-        echo "Sha: ${{ steps.vars.outputs.sha_short }}"
-        
-    - uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        author_name: Integration Test
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      if: always()
+        echo "Sha: ${{ steps.vars.outputs.sha_short }}"   
   
     - uses: 8398a7/action-slack@v2
       with:
         status: custom
         payload: |
           {
-            text: "Custom Field Check",
+            text: "Deployment",
             attachments: [{
               "author_name": "deploy-to-qa1", // json
               fallback: 'fallback',
               color: 'good',
-              title: 'CI Result',
-              text: `${{ github.event.client_payload.branch }}`,
+              title: 'CI Status',
+              text: 'Started',
               fields: [{
                 title: 'Branch',
-                value: `${{ github.event.client_payload.branch }}`,
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}`,
                 short: true
               },
               {
@@ -78,10 +69,13 @@ jobs:
                 short: true
               },
               {
-                title: 'long title1',
-                value: 'long value1',
+                title: 'Action',
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }}/checks | 'deploy-to-qa1'>`,
                 short: false
               }],
+              footer_icon: 'https://github.githubassets.com/favicon.ico',
+              footer: `<https://github.com/nichesoftgh02/test | 'nichesoftgh02/test'>`,
+              ts: Math.floor(Date.now() / 1000),
               actions: [{
               }]
             }]
@@ -90,3 +84,4 @@ jobs:
         DD: ${{ github.event.client_payload.branch }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # optional
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      if: always()
