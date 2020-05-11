@@ -42,9 +42,11 @@ jobs:
         
     - name: Declare some variables
       id: vars
+      env:
+        DD: ${{ github.event.client_payload.branch }}
       shell: bash
       run: |
-        echo "##[set-output name=branch;]$(echo ${{github.event.client_payload.branch#refs/heads/}})"
+        echo "##[set-output name=branch;]$(echo ${DD#refs/heads/})"
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
     - name: Another step
