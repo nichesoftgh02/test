@@ -75,7 +75,8 @@ jobs:
       run: |
         echo "Branch: ${{ steps.vars.outputs.branch }}"
         echo "Sha: ${{ steps.vars.outputs.sha_short }}"
-        echo "Branch: $GITHUB_REF"
+        BRANCH=$(echo $BRANCH | sed -e "s/refs\/heads\///")
+        echo "Branch: $BRANCH"
         echo "Sha: $GITHUB_SHA"
     
     - uses: 8398a7/action-slack@v2
