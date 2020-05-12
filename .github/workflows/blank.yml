@@ -46,7 +46,7 @@ jobs:
               text: 'STARTING',
               fields: [{
                 title: 'Branch',
-                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}>`,
+                value: `<https://github.com/nichesoftgh02/test/commit/$GITHUB_SHA | ${{ github.event.client_payload.branch }}>`,
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
