@@ -40,16 +40,16 @@ jobs:
             attachments: [{
               "author_name": "deploy-to-qa1", // json
               fallback: 'fallback',
-              color: 'warning',
-              title: 'CI Status',
+              color: '#FFCC00',
+              title: 'Status',
               text: 'STARTING',
               fields: [{
                 title: 'Branch',
-                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}`,
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}>`,
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
-              footer: `<https://github.com/nichesoftgh02/test | 'nichesoftgh02/test'>`,
+              footer: `<https://github.com/nichesoftgh02/test | nichesoftgh02/test>`,
               ts: Math.floor(Date.now() / 1000),
               actions: [{
               }]
@@ -70,8 +70,8 @@ jobs:
             attachments: [{
               "author_name": "deploy-to-qa1", // json
               fallback: 'fallback',
-              color: 'warning',
-              title: 'CI Status',
+              color: '#00ff00',
+              title: 'Status',
               text: 'SUCCESS',
               fields: [{
                 title: 'Branch',
@@ -79,7 +79,7 @@ jobs:
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
-              footer: `<https://github.com/nichesoftgh02/test | 'nichesoftgh02/test'>`,
+              footer: `<https://github.com/nichesoftgh02/test | nichesoftgh02/test>`,
               ts: Math.floor(Date.now() / 1000),
               actions: [{
               }]
@@ -100,12 +100,12 @@ jobs:
             attachments: [{
               "author_name": "deploy-to-qa1", // json
               fallback: 'fallback',
-              color: 'danger',
-              title: 'CI Status',
+              color: '#FF0000',
+              title: 'Status',
               text: 'FAILED',
               fields: [{
                 title: 'Branch',
-                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}`,
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}>`,
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
