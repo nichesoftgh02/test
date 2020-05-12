@@ -30,8 +30,7 @@ jobs:
       run: |
         echo "##[set-output name=branch;]$(echo ${DD#refs/heads/})"
         echo "##[set-output name=branch2;]$(echo $GITHUB_REF | sed -e 's/refs\/heads\///')"
-        echo "##[set-output name=sh2;]$(echo $GITHUB_SHA )"
-        echo "::set-output name=sha_short::$(git rev-parse HEAD)" 
+        echo "##[set-output name=sha2;]$(echo $GITHUB_SHA )"
         
     - uses: 8398a7/action-slack@v2
       with:
@@ -95,7 +94,7 @@ jobs:
               text: 'SUCCESS',
               fields: [{
                 title: 'Branch',
-                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}>`,
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha2 }} | ${{ github.event.client_payload.branch }}>`,
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
@@ -125,7 +124,7 @@ jobs:
               text: 'FAILED',
               fields: [{
                 title: 'Branch',
-                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha_short }} | ${{ github.event.client_payload.branch }}>`,
+                value: `<https://github.com/nichesoftgh02/test/commit/${{ steps.vars.outputs.sha2 }} | ${{ github.event.client_payload.branch }}>`,
                 short: false
               }],
               footer_icon: 'https://github.githubassets.com/favicon.ico',
