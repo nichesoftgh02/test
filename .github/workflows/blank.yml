@@ -29,6 +29,7 @@ jobs:
       shell: bash
       run: |
         echo "##[set-output name=branch;]$(echo ${DD#refs/heads/})"
+        echo "##[set-output name=branch2;]$(echo $GITHUB_REF | sed -e "s/refs\/heads\///")
         echo "::set-output name=sha_short::$(git rev-parse HEAD)" 
         
     - uses: 8398a7/action-slack@v2
@@ -75,8 +76,8 @@ jobs:
       run: |
         echo "Branch: ${{ steps.vars.outputs.branch }}"
         echo "Sha: ${{ steps.vars.outputs.sha_short }}"
-        BRANCH=$(echo $BRANCH | sed -e "s/refs\/heads\///")
-        echo "Branch: $BRANCH"
+        
+        echo "Branch2: ${{ steps.vars.outputs.branch2 }}"
         echo "Sha: $GITHUB_SHA"
     
     - uses: 8398a7/action-slack@v2
